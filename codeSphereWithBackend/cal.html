@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework Calendar</title>
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            padding: 20px;
+        }
+        #filters {
+            margin-right: 20px;
+            width: 200px;
+        }
+        #calendar {
+            max-width: 900px;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="filters">
+        <h3>Filter Options</h3>
+        <h4>Courses</h4>
+        <div>
+            <input type="checkbox" id="course1" name="course" value="資訊工程學系導師班">
+            <label for="course1">資訊工程學系導師班</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course2" name="course" value="數據分析智慧 Data Analysis Intelligence">
+            <label for="course2">數據分析智慧 Data Analysis Intelligence</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course3" name="course" value="電腦網路及程式 Department Computer Network and Programming">
+            <label for="course3">電腦網路及程式 Department Computer Network and Programming</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course4" name="course" value="程式語言 Principles of Programming Languages">
+            <label for="course4">程式語言 Principles of Programming Languages</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course5" name="course" value="日文(一)A Japanese(I) A">
+            <label for="course5">日文(一)A Japanese(I) A</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course6" name="course" value="程式設計-Python Programming-Python">
+            <label for="course6">程式設計-Python Programming-Python</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course7" name="course" value="電子電路學 Electronic Circuits">
+            <label for="course7">電子電路學 Electronic Circuits</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course8" name="course" value="計算機組織 Computer Organization">
+            <label for="course8">計算機組織 Computer Organization</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course9" name="course" value="作業系統 Operating System">
+            <label for="course9">作業系統 Operating System</label>
+        </div>
+        <div>
+            <input type="checkbox" id="course10" name="course" value="演算法 Algorithmics">
+            <label for="course10">演算法 Algorithmics</label>
+        </div>
+        <h4>Time Ranges</h4>
+        <div>
+            <input type="checkbox" id="threeDays" name="timeRange" value="3">
+            <label for="threeDays">From now on three days</label>
+        </div>
+        <div>
+            <input type="checkbox" id="oneWeek" name="timeRange" value="7">
+            <label for="oneWeek">From now on one week</label>
+        </div>
+        <div>
+            <input type="checkbox" id="twoWeeks" name="timeRange" value="14">
+            <label for="twoWeeks">From now on two weeks</label>
+        </div>
+        <div>
+            <input type="checkbox" id="oneMonth" name="timeRange" value="30">
+            <label for="oneMonth">From now on one month</label>
+        </div>
+        <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <div id='calendar'></div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var events = [
+                { title: '作業系統報告', start: '2024-05-23', course: '作業系統 Operating System' },
+                { title: 'Flask 作業', start: '2024-05-23', course: '電腦網路及程式 Department Computer Network and Programming' },
+                { title: '作業5', start: '2024-05-27', course: '演算法 Algorithmics' },
+                { title: 'Assignment2 繳交區', start: '2024-06-01', course: '程式語言 Principles of Programming Languages' },
+                { title: 'Homework 2', start: '2024-06-02', course: '作業系統 Operating System' },
+                { title: 'Docker 作業 & Linux system call 作業', start: '2024-06-02', course: '作業系統 Operating System' },
+                { title: 'HW6', start: '2024-06-05', course: '計算機組織 Computer Organization' },
+                { title: '程式作業二', start: '2024-06-07', course: '演算法 Algorithmics' },
+                { title: 'Homework4', start: '2024-06-12', course: '電子電路學 Electronic Circuits' },
+                { title: 'Homework5', start: '2024-06-12', course: '電子電路學 Electronic Circuits' },
+                { title: '實驗二', start: '2024-06-19', course: '電子電路學 Electronic Circuits' },
+                { title: '實驗三', start: '2024-06-19', course: '電子電路學 Electronic Circuits' },
+                { title: '實驗四', start: '2024-06-19', course: '電子電路學 Electronic Circuits' },
+                { title: 'Final Project', start: '2024-06-20', course: '計算機組織 Computer Organization' },
+                { title: '【加分】展覽心得', start: '2024-06-21', course: '作業系統 Operating System' }
+            ];
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: events,
+                eventDidMount: function(info) {
+                    var eventDate = new Date(info.event.start);
+                    var now = new Date();
+                    if (eventDate < now) {
+                        info.el.style.backgroundColor = 'darkgray';
+                        info.el.style.borderColor = 'darkgray';
+                    }
+                }
+            });
+
+            calendar.render();
+
+            window.applyFilters = function() {
+                var selectedCourses = Array.from(document.querySelectorAll('input[name="course"]:checked')).map(cb => cb.value);
+                var selectedTimeRanges = Array.from(document.querySelectorAll('input[name="timeRange"]:checked')).map(cb => parseInt(cb.value));
+                
+                var filteredEvents = events.filter(event => {
+                    var includeByCourse = selectedCourses.length === 0 || selectedCourses.includes(event.course);
+                    
+                    var includeByTimeRange = true;
+                    if (selectedTimeRanges.length > 0) {
+                        includeByTimeRange = selectedTimeRanges.some(days => {
+                            var eventDate = new Date(event.start);
+                            var now = new Date();
+                            var timeDiff = eventDate - now;
+                            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            return daysDiff <= days;
+                        });
+                    }
+                    
+                    return includeByCourse && includeByTimeRange;
+                });
+                console.log(filteredEvents)
+                calendar.removeAllEvents();
+                calendar.addEventSource(filteredEvents);
+            };
+        });
+    </script>
+</body>
+</html>

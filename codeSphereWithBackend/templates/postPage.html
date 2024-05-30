@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Post</title>
+    <link rel="stylesheet" href="postPage.css">
+    <link rel="stylesheet" href="./../components/navbar.css">
+</head>
+<body>
+    <div class="page-content">
+        <h1 id="post-title"></h1>
+        <h3 id="post-summary"></h3>
+        <div id="post-content"></div>
+        <div>
+            <button id="like-button">Like</button>
+            <span id="like-count">0</span> Likes
+        </div>
+        <div>
+            <h3>Comments:</h3>
+            <div id="comments-container"></div>
+            <textarea id="comment-input" rows="4" placeholder="Add a comment"></textarea>
+            <button id="add-comment-button">Add Comment</button>
+        </div>
+    </div>
+    <script src="postPage.js"></script>
+    <script src="./../components/navbar.js"></script>
+</body>
+</html>
